@@ -4,15 +4,21 @@ import {useDispatch, useSelector} from 'react-redux'
 import { fetchPosts } from '../../store/slices/postSlice'
 
 const ListPosts = () => {
+  //useParams to get Id from route
   const {userId} = useParams()
+
+  //call state from redux
   const allPosts = useSelector((state)=>state.post.posts)
   const dispatch = useDispatch()
+
+  //create state to add Comment 
   const [formPost, setFormPost] = useState({
     title: '',
     body: '',
   });
   const [openForm, setOpenForm] = useState(false)
   
+  //Function for Add Post
   const addPost = async (e) =>{
     e.preventDefault();
     try {
@@ -39,6 +45,7 @@ const ListPosts = () => {
   };
  
   useEffect(()=>{
+    //call the function from Store with dispatch
     dispatch(fetchPosts(userId))
   },[])
   return (
@@ -50,6 +57,7 @@ const ListPosts = () => {
         className='block mt-3 rounded-md bg-blue-700 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700'
         >Add Post</button>
       </div>
+        {/* Hide the Form and then Click Add Post to show it */}
         {openForm && (
           <form onSubmit={addPost}>
             <div className='py-3'>

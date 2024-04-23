@@ -3,18 +3,21 @@ import { Link, useParams } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import { fetchAlbums } from '../../store/slices/albumSlice'
 const ListAlbums = () => {
+  //useParams to get Id from route
   const {userId} = useParams();
+
+  //call state from redux
   const allAlbum = useSelector((state) =>state.album.albums)
   const dispatch = useDispatch()
   
   useEffect(()=>{
+    //call the function from Store with dispatch
     dispatch(fetchAlbums(userId))
   },[])
-  console.log(allAlbum)
+  
   return (
     <div>
         <h1>List Albums</h1>
-   
         <div className="lg:col-span-3 my-7">
             <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
                     {allAlbum ? allAlbum 

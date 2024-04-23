@@ -2,12 +2,19 @@ import {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import { fetchComments, fetchPost } from '../../store/slices/postSlice'
-import axios from 'axios'
+
 const DetailPost = () => {
+  //useParams to get Id from route
   const params = useParams();
+
+  //call state from redux
   const postDetail = useSelector((state)=>state.post.post);
+  //call state from redux
   const allComment = useSelector((state)=>state.post.comments);
+
   const dispatch = useDispatch();
+
+  //create state to add Comment 
   const [formComment, setFormComment] = useState({
     name: '',
     body: '',
@@ -16,6 +23,7 @@ const DetailPost = () => {
   });
   const [openForm, setOpenForm] = useState(false)
 
+  //Function for Add Comment
   const addComment = async (e) =>{
     e.preventDefault();
     try {
@@ -34,14 +42,16 @@ const DetailPost = () => {
       // Handle error, show message, etc.
     }
   }
+
   const handleChange = (e) => {
     setFormComment({
       ...formComment,
       [e.target.name]: e.target.value,
     });
   };
+
   useEffect(()=>{
-  
+    //call the function from Store with dispatch
     dispatch(fetchPost(params.id))
     dispatch(fetchComments(params.id))
   },[])
@@ -81,9 +91,8 @@ const DetailPost = () => {
                   </div>
                 </div>   
           </div>
-        )
-
-        }
+        )}
+        {/* Hide the Form and then Click Add Comment to show it */}
        {openForm && (
         <form onSubmit={addComment}>
           <input type="text" hidden value={params.id}/>
@@ -123,9 +132,7 @@ const DetailPost = () => {
             </div>
             <button type="submit" className='block mt-3 rounded-md bg-blue-700 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700'>Submit</button>
         </form>
-       )
-
-       }
+       )}
 
         <h2 className='text-2xl font-semibold mt-3'>Comment</h2>
         { allComment ? allComment.map(item => (
@@ -150,11 +157,6 @@ const DetailPost = () => {
             </div>
           </div>
         </div>   
-            // <li key={item.id}>
-            // <h3>{item.name}</h3>
-            // <p>{item.email}</p>
-            // <p>{item.body}</p>
-            // </li>
         )) : <p>Loading...</p>
 
         }

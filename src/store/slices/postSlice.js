@@ -1,5 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
+
+//Function for fetch List Post with user ID
 export const fetchPosts = createAsyncThunk(
     "posts/fetchPosts",
     async (userId) =>{
@@ -8,6 +10,8 @@ export const fetchPosts = createAsyncThunk(
         return response.data
     }
 )
+
+//Function for fetch Detail Post with Post ID
 export const fetchPost = createAsyncThunk(
     "post/fetchPost",
     async (postId) =>{
@@ -16,6 +20,8 @@ export const fetchPost = createAsyncThunk(
         return response.data
     }
 )
+
+//Function for fetch Comment with Post ID
 export const fetchComments = createAsyncThunk(
     "comments/fetchComments",
     async (postId) =>{
@@ -25,8 +31,7 @@ export const fetchComments = createAsyncThunk(
     }
 )
 
-
-
+//Create State Globally 
 const initialState = {
     posts:[],
     post: '',

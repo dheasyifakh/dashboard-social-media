@@ -3,12 +3,16 @@ import { useParams } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import { fetchPhotos } from '../../store/slices/albumSlice'
 const ListPhotos = () => {
+  //useParams to get Id from route
   const {albumId} = useParams()
+
+  //call state from redux
   const allPhotos = useSelector((state)=>state.album.photos)
   const dispatch = useDispatch()
   const [openPhoto, setOpenPhoto] = useState(null)
   
   useEffect(()=>{
+    //call the function from Store with dispatch
     dispatch(fetchPhotos(albumId))
   })
    return (
@@ -30,9 +34,6 @@ const ListPhotos = () => {
                         }}
                           >See the details</button>
                       </div>
-                   
-
-                    
                     </div>
                 </div>
                 {openPhoto === photo.id && (

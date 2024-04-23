@@ -1,5 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
+
+//Function for fetch List Albums with user ID
 export const fetchAlbums = createAsyncThunk(
     "albums/fetchAlbums",
     async (userId) =>{
@@ -8,6 +10,8 @@ export const fetchAlbums = createAsyncThunk(
         return response.data
     }
 )
+
+//Function for fetch List Photos with Album ID
 export const fetchPhotos = createAsyncThunk(
     "photos/fetchPhotos",
     async (albumId) =>{
@@ -16,6 +20,8 @@ export const fetchPhotos = createAsyncThunk(
         return response.data
     }
 )
+
+//Function for fetch Detail Photo with photo ID
 export const fetchPhoto = createAsyncThunk(
     "photo/fetchPhoto",
     async (photoId) =>{
@@ -26,7 +32,7 @@ export const fetchPhoto = createAsyncThunk(
 )
 
 
-
+//Create State globally
 const initialState = {
     albums:[],
     photos: [],
