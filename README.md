@@ -9,7 +9,7 @@
  `cd dashboard-social-media`
 
  3. Install Dependencies:
- # `npm install`
+ `npm install`
 
  ## Running the Vite React App Locally
  4. Start the Development Server:
