@@ -1,7 +1,7 @@
-import React,{useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import { fetchPhotos, fetchPhoto } from '../../store/slices/albumSlice'
+import { fetchPhotos } from '../../store/slices/albumSlice'
 const ListPhotos = () => {
   const {albumId} = useParams()
   const allPhotos = useSelector((state)=>state.album.photos)
@@ -17,7 +17,7 @@ const ListPhotos = () => {
 
         <div className='lg:col-span-3 my-7'>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {allPhotos ? allPhotos.map((photo, index) => (
+            {allPhotos ? allPhotos.map((photo) => (
               <div key={photo.id}>
                 <div  className="rounded-xl border-2 border-gray-100 bg-white my-7" >
                     <div className="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
@@ -37,19 +37,19 @@ const ListPhotos = () => {
                     </div>
                 </div>
                 {openPhoto === photo.id && (
-                  <div class="block">
+                  <div className="block">
                     <img
                       alt=""
                       src={photo.url}
-                      class="h-56 w-full rounded-bl-3xl rounded-tr-3xl object-cover sm:h-64 lg:h-72"
+                      className="h-56 w-full rounded-bl-3xl rounded-tr-3xl object-cover sm:h-64 lg:h-72"
                     />
                 
-                  <div class="mt-4 sm:flex sm:items-center sm:justify-center sm:gap-4">
-                    <strong class="font-medium">{photo.title}</strong>
+                  <div className="mt-4 sm:flex sm:items-center sm:justify-center sm:gap-4">
+                    <strong className="font-medium">{photo.title}</strong>
                 
 
                 
-                    <button class="mt-0.5 opacity-50 sm:mt-0 border border-blue-300 p-2" onClick={()=>{setOpenPhoto(null)}}>Close</button>
+                    <button className="mt-0.5 opacity-50 sm:mt-0 border border-blue-300 p-2" onClick={()=>{setOpenPhoto(null)}}>Close</button>
                   </div>
 
                 </div>
