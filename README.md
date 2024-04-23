@@ -16,7 +16,7 @@
  `npm run dev`
 
  5. Access the Application:
- Open your web browser and navigate to http://localhost:3000.
+ Open your web browser and navigate to http://localhost:5173/
 
 ## Additional Scripts
 
