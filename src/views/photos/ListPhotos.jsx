@@ -23,13 +23,12 @@ const ListPhotos = () => {
                     <div className="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
                       <div className="">
                           <h4 className='font-bold'>{photo.title}</h4>
-                        {/* <img src={photo.url} alt='image' width={200}/> */}
                         <button 
                         className='block mt-3 rounded-md bg-blue-700 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700'
                         onClick={()=>{
                             setOpenPhoto(photo.id)
                         }}
-                    >See the details</button>
+                          >See the details</button>
                       </div>
                    
 
