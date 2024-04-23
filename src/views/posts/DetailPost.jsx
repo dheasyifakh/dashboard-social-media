@@ -9,10 +9,37 @@ const DetailPost = () => {
   const allComment = useSelector((state)=>state.post.comments);
   const dispatch = useDispatch();
   const [formComment, setFormComment] = useState({
-    title: '',
+    name: '',
     body: '',
+    email:'',
+    postId: params.id
   });
   const [openForm, setOpenForm] = useState(false)
+
+  const addComment = async (e) =>{
+    e.preventDefault();
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formComment),
+      });
+      const data = await response.json();
+      console.log('Post created:', data);
+      alert('Success to add Comment')
+    } catch (error) {
+      console.error('Error creating post:', error);
+      // Handle error, show message, etc.
+    }
+  }
+  const handleChange = (e) => {
+    setFormComment({
+      ...formComment,
+      [e.target.name]: e.target.value,
+    });
+  };
   useEffect(()=>{
   
     dispatch(fetchPost(params.id))
@@ -58,17 +85,29 @@ const DetailPost = () => {
 
         }
        {openForm && (
-        <form>
-          <input type="text" hidden />
+        <form onSubmit={addComment}>
+          <input type="text" hidden value={params.id}/>
           <div className='py-3'>
-              <label for="title" className="block text-lg font-medium text-gray-700">Title </label>
+              <label for="name" className="block text-lg font-medium text-gray-700">Name </label>
                 <input
                     type="text"
-                    id="title"
-                    name="title"
-                    placeholder='Title'
-                    // value={formPost.title}
-                    // onChange={handleChange}
+                    id="name"
+                    name="name"
+                    placeholder='Name'
+                    value={formComment.name}
+                    onChange={handleChange}
+                    className="mt-1 w-48 rounded-md border-gray-200 shadow-sm sm:text-sm p-2"
+                  />   
+            </div>
+          <div className='py-3'>
+              <label for="title" className="block text-lg font-medium text-gray-700">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder='Email'
+                    value={formComment.email}
+                    onChange={handleChange}
                     className="mt-1 w-48 rounded-md border-gray-200 shadow-sm sm:text-sm p-2"
                   />   
             </div>
@@ -77,8 +116,8 @@ const DetailPost = () => {
               <textarea
                     id="body"
                     name="body"
-                    // value={formPost.body}
-                    // onChange={handleChange}
+                    value={formComment.body}
+                    onChange={handleChange}
                     className='rounded-md w-96 border-gray-200 shadow-sm sm:text-sm h-48'
                   />
             </div>
@@ -88,7 +127,7 @@ const DetailPost = () => {
 
        }
 
-        <h2 className='text-2xl font-semibold'>Comment</h2>
+        <h2 className='text-2xl font-semibold mt-3'>Comment</h2>
         { allComment ? allComment.map(item => (
           <div className="rounded-xl border-2 border-gray-100 bg-white my-7 ml-8" key={item.id}>
           <div className="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
