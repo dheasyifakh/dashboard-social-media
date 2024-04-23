@@ -42,7 +42,12 @@ const Navbar = () => {
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
   return (
     <div className='flex justify-between p-2 md:ml-6 md:mr-6 relative'>
-        <NavButton title="Menu" customFunc={handleActiveMenu()} color='black' icon={<AiOutlineMenu />} />
+        <button  type="button"
+            onClick={() =>{}}
+            className="relative text-xl rounded-full p-3 hover:bg-light-gray">
+           
+              <AiOutlineMenu />
+        </button>
         <div className="flex">
         <NavButton title="Notification"  customFunc={() => handleClick('notification')} color='black' icon={<RiNotification3Line />} />
         

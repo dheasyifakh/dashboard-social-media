@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import { fetchPosts } from '../../store/slices/postSlice'
@@ -7,14 +7,79 @@ const ListPosts = () => {
   const {userId} = useParams()
   const allPosts = useSelector((state)=>state.post.posts)
   const dispatch = useDispatch()
-
+  const [formPost, setFormPost] = useState({
+    title: '',
+    body: '',
+  });
+  const [openForm, setOpenForm] = useState(false)
+  
+  const addPost = async (e) =>{
+    e.preventDefault();
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formPost),
+      });
+      const data = await response.json();
+      console.log('Post created:', data);
+      alert('Success to add Post')
+    } catch (error) {
+      console.error('Error creating post:', error);
+      // Handle error, show message, etc.
+    }
+  }
+  const handleChange = (e) => {
+    setFormPost({
+      ...formPost,
+      [e.target.name]: e.target.value,
+    });
+  };
  
   useEffect(()=>{
     dispatch(fetchPosts(userId))
   },[])
   return (
     <div>
+      <div className="flex justify-between ">
         <h1 className='text-3xl'>List Posts</h1>
+        <button 
+        onClick={()=>{setOpenForm(true)}}
+        className='block mt-3 rounded-md bg-blue-700 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700'
+        >Add Post</button>
+      </div>
+        {openForm && (
+          <form onSubmit={addPost}>
+            <div className='py-3'>
+              <label for="title" className="block text-lg font-medium text-gray-700">Title </label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder='Title'
+                    value={formPost.title}
+                    onChange={handleChange}
+                    className="mt-1 w-48 rounded-md border-gray-200 shadow-sm sm:text-sm p-2"
+                  />   
+            </div>
+            <div>
+              <label  className="block text-lg font-medium text-gray-700" htmlFor="body">Body:</label>
+              <textarea
+                    id="body"
+                    name="body"
+                    value={formPost.body}
+                    onChange={handleChange}
+                    className='rounded-md w-96 border-gray-200 shadow-sm sm:text-sm h-48'
+                  />
+            </div>
+            <button type="submit" className='block mt-3 rounded-md bg-blue-700 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700'>Submit</button>
+          </form>
+        )
+
+        }
+        
         <div className='lg:col-span-3'>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {allPosts ? allPosts 
