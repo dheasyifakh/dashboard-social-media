@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import { fetchPosts } from '../../store/slices/postSlice'
+import FormEditPost from '../../components/form/FormEditPost'
 
 const ListPosts = () => {
   //useParams to get Id from route
@@ -17,6 +18,7 @@ const ListPosts = () => {
     body: '',
   });
   const [openForm, setOpenForm] = useState(false)
+  const [openFormEdit, setOpenFormEdit] = useState(null)
   
   //Function for Add Post
   const addPost = async (e) =>{
@@ -36,6 +38,32 @@ const ListPosts = () => {
       console.error('Error creating post:', error);
       // Handle error, show message, etc.
     }
+  }
+  //Function for Edit Post
+  const editPost = async (postId, newData) => {
+    try {
+      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+      });
+      const data = await response.json();
+      console.log('Post edited:', data);
+      alert('Success to edit Post')
+      // Handle success or navigate to another page
+    } catch (error) {
+      console.error('Error editing post:', error);
+      // Handle error, show message, etc.
+    }
+  };
+
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    // Assuming you have the post ID
+    const postId = 1; // Replace with the actual post ID
+    editPost(postId, formPost);
   }
   const handleChange = (e) => {
     setFormPost({
@@ -92,37 +120,41 @@ const ListPosts = () => {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {allPosts ? allPosts 
               .map(post => (
-                <div className="rounded-xl border-2 border-gray-100 bg-white my-7" key={post.id}>
-                  <div className="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
-                    
+                <div className="" key={post.id}>
+                  <div className="rounded-xl border-2 border-gray-100 bg-white my-7" >
+                    <div className="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
+                      <div>
+                        <h3 className="font-medium sm:text-lg text-blue-400">
+                          <Link to={`/posts/${userId}/${post.id}`} className="hover:underline"> {post.title} </Link>
+                        </h3>
 
-                    <div>
-                      <h3 className="font-medium sm:text-lg text-blue-400">
-                        <Link to={`/posts/${userId}/${post.id}`} className="hover:underline"> {post.title} </Link>
-                      </h3>
-
-                      <p className="line-clamp-2 text-sm text-gray-700">
-                        {post.body}
-                      </p>
-
-                      <div className="mt-2 sm:flex sm:items-center sm:gap-2">
-                        <div className="flex items-center gap-1 text-gray-500">
-                          
-
-                          <p className="text-xs">comments</p>
-                        </div>
-
-                        <span className="hidden sm:block" aria-hidden="true">&middot;</span>
-
-                        <p className="hidden sm:block sm:text-xs sm:text-gray-500">
-                          Posted
+                        <p className="line-clamp-2 text-sm text-gray-700">
+                          {post.body}
                         </p>
+
+                        <div className="mt-2 sm:flex sm:items-center sm:gap-2">
+                          <div className="flex items-center gap-1 text-gray-500">
+                            
+
+                            <p className="text-xs">comments</p>
+                          </div>
+
+                          <span className="hidden sm:block" aria-hidden="true">&middot;</span>
+
+                          <button onClick={()=>{setOpenFormEdit(post.id)}} className="hidden sm:block sm:text-xs sm:text-gray-500">
+                            Edit
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  {openFormEdit === post.id && (
+                    <FormEditPost post={post} handleSubmit={handleSubmit} setFormPost={setFormPost} formPost={formPost} handleChange={handleChange}/>
+                  )
 
-                  
+                  }
                 </div>
+                
               )): <p>Loading...</p>
 
             }

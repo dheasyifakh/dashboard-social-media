@@ -148,8 +148,6 @@ const DetailPost = () => {
               </p>
 
               <div className="mt-2 sm:flex sm:items-center sm:gap-2">
-              
-
                 <p className="hidden sm:block sm:text-sm sm:text-gray-800">
                 {item.email}
                 </p>

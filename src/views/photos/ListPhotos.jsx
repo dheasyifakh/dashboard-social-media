@@ -36,6 +36,7 @@ const ListPhotos = () => {
                       </div>
                     </div>
                 </div>
+                {/* See the detail of Photo */}
                 {openPhoto === photo.id && (
                   <div className="block">
                     <img
@@ -46,9 +47,6 @@ const ListPhotos = () => {
                 
                   <div className="mt-4 sm:flex sm:items-center sm:justify-center sm:gap-4">
                     <strong className="font-medium">{photo.title}</strong>
-                
-
-                
                     <button className="mt-0.5 opacity-50 sm:mt-0 border border-blue-300 p-2" onClick={()=>{setOpenPhoto(null)}}>Close</button>
                   </div>
 
