@@ -1,53 +1,68 @@
 import React,{useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
+import {useDispatch, useSelector} from 'react-redux'
+import { fetchPhotos, fetchPhoto } from '../../store/slices/albumSlice'
 const ListPhotos = () => {
   const {albumId} = useParams()
-  const [photos, setPhotos] = useState([])
-  const [photo, setPhoto] = useState()
+  const allPhotos = useSelector((state)=>state.album.photos)
+  const dispatch = useDispatch()
   const [openPhoto, setOpenPhoto] = useState(null)
-  const fetchPhotos = async() =>{
-    const response = await fetch(`https://jsonplaceholder.typicode.com/albums/${albumId}/photos`)
-    const data = await response.json()
-    setPhotos(data)
-  }
-  const fetchPhoto = async photoId =>{
-    const response = await fetch(`https://jsonplaceholder.typicode.com//photos/${photoId}`)
-    const data = await response.json()
-    setPhoto(data)
-  }
-
+  
   useEffect(()=>{
-    fetchPhotos()
-    fetchPhoto()
+    dispatch(fetchPhotos(albumId))
   })
    return (
     <div>
-        <h1>List Photos from an Album</h1>
-        <ul>
-            {photos ? photos.map((photo, index) => (
-                <li key={photo.id}>
-                    {index+1}
-                    <h4>{photo.title}</h4>
-                    {/* <img src={photo.url} alt='image' width={200}/> */}
-                    <button onClick={()=>{
-                        setOpenPhoto(photo.id)
-                        fetchPhoto(photo.id)
-                    }}
+        <h1 className='text-3xl font-bold'>List Photos from an Album</h1>
+
+        <div className='lg:col-span-3 my-7'>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {allPhotos ? allPhotos.map((photo, index) => (
+              <div key={photo.id}>
+                <div  className="rounded-xl border-2 border-gray-100 bg-white my-7" >
+                    <div className="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
+                      <div className="">
+                          <h4 className='font-bold'>{photo.title}</h4>
+                        {/* <img src={photo.url} alt='image' width={200}/> */}
+                        <button 
+                        className='block mt-3 rounded-md bg-blue-700 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700'
+                        onClick={()=>{
+                            setOpenPhoto(photo.id)
+                        }}
                     >See the details</button>
+                      </div>
+                   
 
-                    {openPhoto === photo.id && (
-                        <div>
-                            <h4>{photo.title}</h4>
-                            <img src={photo.url} alt='image'/>
-                        </div>
-                    )
+                    
+                    </div>
+                </div>
+                {openPhoto === photo.id && (
+                  <div class="block">
+                    <img
+                      alt=""
+                      src={photo.url}
+                      class="h-56 w-full rounded-bl-3xl rounded-tr-3xl object-cover sm:h-64 lg:h-72"
+                    />
+                
+                  <div class="mt-4 sm:flex sm:items-center sm:justify-center sm:gap-4">
+                    <strong class="font-medium">{photo.title}</strong>
+                
 
-                    }
-                </li>
+                
+                    <button class="mt-0.5 opacity-50 sm:mt-0 border border-blue-300 p-2" onClick={()=>{setOpenPhoto(null)}}>Close</button>
+                  </div>
+
+                </div>
+                  
+                )
+
+                }
+                </div>
             )) : <p>Loading...</p>
 
             }
-        </ul>
+          </div>
+        </div>
     </div>
   )
 }

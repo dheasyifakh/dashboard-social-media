@@ -14,29 +14,31 @@ const Dashboard = () => {
   },[])
 
   return (
-    <div>
-        <table>
+    <div className='overflow-x-auto'>
+        <div className="flex ">
+
+        </div>
+        <h2 className='text-4xl font-bold'>List Users</h2>
+        <table className=' w-full table-auto border-collapse border border-gray-400 my-6'>
             <tr>
-                <th>No</th>
-                <th>Name</th>
-                <th>Posts</th>
-                <th>Album</th>
-                <th>Detail</th>
+                <th className="px-4 py-2 bg-gray-200 border border-gray-400">No</th>
+                <th className="px-4 py-2 bg-gray-200 border border-gray-400">Name</th>
+                <th className="px-4 py-2 bg-gray-200 border border-gray-400">Posts</th>
+                <th className="px-4 py-2 bg-gray-200 border border-gray-400">Album</th>
             </tr>
             
                 {user ? user.map((x,index)=>{
                     return (
                         <tr key={x.id}>
-                            <td>{index +1}</td>
-                            <td>{x.name}</td>
-                            <td>
-                                <Link to={`/posts/${x.id}`}>Detail Post</Link>
+                            <td className='p-4 border border-gray-400'>{index +1}</td>
+                            <td className='p-4 border border-gray-400'>{x.name}</td>
+                            <td className='p-4 border border-gray-400 text-center'>
+                                <Link to={`/posts/${x.id}`} className='rounded-xl p-2 border border-gray-500'>See Posts</Link>
                             </td>
-                            <td>
-                                <Link to={`/albums/${x.id}`}>Detail Albums</Link>
+                            <td className='p-4 border border-gray-400 text-center'>
+                                <Link to={`/albums/${x.id}`} className='rounded-xl p-2 border border-gray-500'>See Albums</Link>
 
                             </td>
-                            <td>{x.id}</td>
                         </tr>
                     )
                 })
